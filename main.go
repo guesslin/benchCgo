@@ -17,16 +17,21 @@ C to GO callback bench test end
 package main
 
 import (
+	"fmt"
+
 	"github.com/guesslin/benchCgo/mybench"
 )
 
 func main() {
 	times := 500000
 	mybench.MyTest(times)
+	fmt.Println()
 
 	mybench.MyTestPure(times)
+	fmt.Println()
 
 	mybench.MyTestGoToC(times)
+	fmt.Println()
 
 	mybench.MyTestCallback(times)
 }
