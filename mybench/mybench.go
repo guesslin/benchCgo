@@ -47,6 +47,17 @@ func MyTestPure(gotimes int) {
 	fmt.Println("pure GO bench test end")
 }
 
+func MyTestGoToC(gotimes int) {
+	times := C.int(gotimes)
+	var sum C.int
+	fmt.Println("GO to C callback bench test start")
+	start := time.Now()
+	sum = bench(times)
+	end := time.Now()
+	fmt.Println("Duration:", end.Sub(start), "sum", int(sum), "times", int(times))
+	fmt.Println("GO to C callback bench test end")
+}
+
 //export my_go_sum
 func my_go_sum(x, y C.int) C.int {
 	return x + y
@@ -57,6 +68,15 @@ func bench(times C.int) C.int {
 	var i C.int
 	for i = 0; i < times; i++ {
 		sum += my_go_sum(i, i+1)
+	}
+	return sum
+}
+
+func benchWithC(times C.int) C.int {
+	var sum C.int = 0
+	var i C.int
+	for i = 0; i < times; i++ {
+		sum += C.my_bench_sum(i, i+1)
 	}
 	return sum
 }
